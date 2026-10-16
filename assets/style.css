@@ -184,3 +184,34 @@ footer a { color: var(--muted); }
 
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
 @media (prefers-reduced-motion: reduce) { .sky { transition: none; } }
+
+/* ---- Feedback form ---- */
+.feedback-form { display: grid; gap: 22px; }
+.feedback-form fieldset { border: 0; padding: 0; margin: 0; }
+.feedback-form legend, .field { font-weight: 600; font-size: 18px; }
+.feedback-form legend { margin-bottom: 12px; }
+.choices { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.choices label { display: flex; gap: 12px; align-items: flex-start; background: var(--surface); border-radius: 16px; padding: 14px 16px; cursor: pointer; border: 2px solid transparent; }
+.choices label:has(input:checked) { border-color: var(--accent); }
+.choices input { margin-top: 4px; accent-color: var(--accent); }
+.choices span { display: grid; gap: 2px; font-weight: 400; font-size: 15px; color: var(--muted); }
+.choices strong { color: var(--text); font-size: 16px; }
+.field { display: grid; gap: 8px; }
+.field .muted { font-weight: 400; font-size: 15px; }
+.feedback-form textarea, .feedback-form input[type=email], .feedback-form select {
+  font: inherit; font-size: 16px; color: var(--text); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; width: 100%; box-sizing: border-box;
+}
+.feedback-form textarea { resize: vertical; min-height: 150px; }
+.feedback-form .send { border: 0; cursor: pointer; justify-self: start; font-family: inherit; background: var(--accent); color: var(--canvas); }
+.feedback-form .send:disabled { opacity: 0.6; cursor: default; }
+.field-error { color: #B3261E; font-size: 15px; margin: -12px 0 0; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .field-error { color: #F2B8B5; } }
+:root[data-theme="dark"] .field-error { color: #F2B8B5; }
+.form-note { font-size: 15px; margin: 0; }
+.form-status { margin: 0; font-weight: 600; }
+.form-status:empty { display: none; }
+.honey { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.contact-card.sent { margin-bottom: 24px; }
+.contact-card.sent .muted { margin-top: 8px; }
+.contact-card .card-more { margin-top: 10px; }

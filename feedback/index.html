@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback | Tahir</title>
+<meta name="description" content="Send feedback about Tahir: a bug, an idea, or something that could work better.">
+<meta name="theme-color" content="#F3B56E">
+<link rel="canonical" href="https://tahir5dailyprayers.com/feedback/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Feedback | Tahir">
+<meta property="og:description" content="Send feedback about Tahir: a bug, an idea, or something that could work better.">
+<meta property="og:url" content="https://tahir5dailyprayers.com/feedback/">
+<meta property="og:image" content="https://tahir5dailyprayers.com/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="preload" href="../assets/fonts/Sora-SemiBold.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/sky.js"></script>
+</head>
+<body>
+<header class="sky">
+  <nav class="nav wrap" aria-label="Main">
+    <a class="brand" href="../"><svg viewBox="163 182 64 52" aria-hidden="true"><polygon points="163,188 195,182 195,234 163,231" class="bl"/><polygon points="195,182 227,188 227,231 195,234" class="br"/><polygon points="163,198 195,192 195,199 163,205" class="gl"/><polygon points="195,192 227,198 227,205 195,199" class="gr"/></svg>Tahir</a>
+    <div class="nav-links">
+      <a href="../support/">Support</a>
+      <a href="../privacy/">Privacy</a>
+    </div>
+  </nav>
+  <div class="wrap page-head">
+    <h1>Feedback</h1>
+    <p>Your feedback shapes Tahir. We read every message.</p>
+  </div>
+</header>
+
+<main class="wrap prose">
+  <form id="feedback" class="feedback-form" novalidate>
+    <fieldset>
+      <legend>What's it about?</legend>
+      <div class="choices">
+        <label><input type="radio" name="category" value="Bug report" required><span><strong>Bug report</strong>Something broken or not working right</span></label>
+        <label><input type="radio" name="category" value="Feature request"><span><strong>Feature request</strong>An idea for something new</span></label>
+        <label><input type="radio" name="category" value="Improvement"><span><strong>Improvement</strong>Something that could work better</span></label>
+        <label><input type="radio" name="category" value="Content"><span><strong>Content</strong>Suggest a dua, hadith or story</span></label>
+        <label><input type="radio" name="category" value="Something else"><span><strong>Something else</strong>Anything at all</span></label>
+      </div>
+      <p class="field-error" id="category-error" hidden>Choose what it's about.</p>
+    </fieldset>
+
+    <label class="field" for="message"><span>Your message</span>
+      <textarea id="message" name="message" rows="7" maxlength="5000" required placeholder="What happened, or what would you like?"></textarea>
+    </label>
+    <p class="field-error" id="message-error" hidden>Write your message first.</p>
+
+    <label class="field" for="device"><span>Your device</span>
+      <select id="device" name="device">
+        <option value="">Choose one (optional)</option>
+        <option>iPhone</option>
+        <option>Apple Watch</option>
+        <option>Android</option>
+        <option>Other</option>
+      </select>
+    </label>
+
+    <label class="field" for="email"><span>Your email <span class="muted">(optional, if you'd like a reply)</span></span>
+      <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com">
+    </label>
+    <p class="field-error" id="email-error" hidden>That email address doesn't look right.</p>
+
+    <input type="hidden" name="app_version" id="app_version">
+    <input type="hidden" name="system" id="system">
+    <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <button type="submit" class="store send" id="send">Send feedback</button>
+    <p class="muted form-note">Your message comes to us by email, through FormSubmit. We use it only to reply and to improve Tahir. See our <a href="../privacy/">privacy policy</a>.</p>
+    <p class="form-status" id="status" role="status" aria-live="polite"></p>
+  </form>
+
+  <div class="contact-card sent" id="sent" hidden tabindex="-1">
+    <p class="email">JazakAllah khair</p>
+    <p class="muted">Your feedback is on its way to us. If you left your email, we'll reply there.</p>
+  </div>
+
+  <p class="muted">Prefer email? Write to <a href="mailto:support@tahir5dailyprayers.com">support@tahir5dailyprayers.com</a>.</p>
+</main>
+<footer>
+  <div class="wrap">
+    <span>© 2026 Omar Aziz</span>
+    <nav aria-label="Footer">
+      <a href="../support/">Support</a>
+      <a href="../feedback/">Feedback</a>
+      <a href="../privacy/">Privacy</a>
+      <a href="mailto:support@tahir5dailyprayers.com">support@tahir5dailyprayers.com</a>
+    </nav>
+  </div>
+</footer>
+<script>
+(function () {
+  var form = document.getElementById("feedback");
+  var status = document.getElementById("status");
+  var send = document.getElementById("send");
+  var endpoint = "https://formsubmit.co/ajax/support@tahir5dailyprayers.com";
+
+  // The apps open this page with ?device=&v=&os= so a report says which build it's about.
+  var q = new URLSearchParams(location.search);
+  var device = q.get("device");
+  if (device) {
+    var select = document.getElementById("device");
+    for (var i = 0; i < select.options.length; i++) {
+      if (select.options[i].text === device) select.selectedIndex = i;
+    }
+  }
+  document.getElementById("app_version").value = (q.get("v") || "").slice(0, 40);
+  document.getElementById("system").value = [q.get("os"), q.get("model")].filter(Boolean).join(" · ").slice(0, 80);
+
+  function show(id, on) { document.getElementById(id).hidden = !on; }
+  form.addEventListener("input", function (e) {
+    if (e.target.name === "category") show("category-error", false);
+    if (e.target.id === "message") show("message-error", false);
+    if (e.target.id === "email") show("email-error", false);
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var category = form.querySelector("input[name=category]:checked");
+    var message = form.message.value.trim();
+    var email = form.email.value.trim();
+    var ok = true;
+    show("category-error", !category); if (!category) ok = false;
+    show("message-error", !message); if (!message) ok = false;
+    var badEmail = email && !form.email.checkValidity();
+    show("email-error", badEmail); if (badEmail) ok = false;
+    if (!ok) { status.textContent = ""; return; }
+    if (form._honey.value) return;
+
+    var data = {
+      _subject: "Tahir feedback: " + category.value,
+      _template: "table",
+      category: category.value,
+      message: message,
+      device: form.device.value || "Not given",
+      app_version: form.app_version.value || "Not given",
+      system: form.system.value || "Not given",
+      email: email || "Not given"
+    };
+    if (email) data._replyto = email;
+
+    send.disabled = true;
+    status.textContent = "Sending…";
+    fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(data)
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      if (res && String(res.success) === "true") {
+        form.hidden = true;
+        show("sent", true);
+        document.getElementById("sent").focus();
+      } else {
+        throw new Error(res && res.message);
+      }
+    }).catch(function () {
+      send.disabled = false;
+      status.textContent = "Your feedback couldn't be sent just now. Try again, or email us at support@tahir5dailyprayers.com.";
+    });
+  });
+})();
+</script>
+</body>
+</html>
