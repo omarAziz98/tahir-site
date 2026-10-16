@@ -160,9 +160,11 @@
       } else {
         throw new Error(res && res.message);
       }
-    }).catch(function () {
+    }).catch(function (err) {
       send.disabled = false;
-      status.textContent = "Your feedback couldn't be sent just now. Try again, or email us at support@tahir5dailyprayers.com.";
+      // FormSubmit says why (e.g. the form still needs activating); show it.
+      var why = err && err.message && err.message !== "undefined" ? " (" + err.message + ")" : "";
+      status.textContent = "Your feedback couldn't be sent just now" + why + ". Try again, or email us at support@tahir5dailyprayers.com.";
     });
   });
 })();
