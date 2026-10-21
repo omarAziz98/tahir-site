@@ -94,6 +94,11 @@ img { max-width: 100%; display: block; }
 .store-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 /* Not a link: the Android app isn't on Google Play yet, so no Play badge. */
 .store.soon { background: transparent; color: inherit; border: 2px solid currentColor; padding: 10px 18px; }
+.follow { margin: 18px 0 0; }
+.follow a { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-soft); font-weight: 600; font-size: 15px; text-decoration: none; }
+.follow a:hover span { text-decoration: underline; }
+.follow svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; }
+.follow svg .fill { fill: currentColor; stroke: none; }
 
 /* Horizon: two minarets and the Kaabah on curved ground, as in the app */
 .horizon { position: relative; height: 285px; margin-top: 8px; overflow: hidden; }
