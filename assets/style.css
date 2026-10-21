@@ -92,7 +92,7 @@ img { max-width: 100%; display: block; }
 }
 .store svg { width: 18px; height: 18px; fill: currentColor; }
 .store-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-/* Not a link: the Android app isn't on Google Play yet, so no Play badge. */
+/* The Android beta sign-up (a Google Group) until Tahir is on Google Play; then the Play badge. */
 .store.soon { background: transparent; color: inherit; border: 2px solid currentColor; padding: 10px 18px; }
 .follow { margin: 18px 0 0; }
 .follow a { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-soft); font-weight: 600; font-size: 15px; text-decoration: none; }
