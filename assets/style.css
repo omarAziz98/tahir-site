@@ -216,6 +216,29 @@ footer a { color: var(--muted); }
 .field-error { color: #B3261E; font-size: 15px; margin: -12px 0 0; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .field-error { color: #F2B8B5; } }
 :root[data-theme="dark"] .field-error { color: #F2B8B5; }
+/* What Tahir fills in when it opens the form: its prayer times, shown as they
+   came, and the country they're for, which people can change or clear. */
+.feedback-form .field[hidden], .feedback-form .hint[hidden] { display: none; }
+.feedback-form .readonly {
+  margin: 0; font-weight: 400; font-size: 16px; color: var(--text); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; overflow-wrap: anywhere;
+}
+.with-clear { position: relative; }
+.feedback-form .with-clear input {
+  font: inherit; font-size: 16px; font-weight: 400; color: var(--text); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 14px; padding: 12px 48px 12px 14px; width: 100%; box-sizing: border-box;
+}
+.with-clear .clear {
+  position: absolute; right: 9px; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+  background: rgba(22, 18, 14, 0.5); color: #FFFFFF;
+}
+.with-clear .clear svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.with-clear .clear[hidden] { display: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .with-clear .clear { background: rgba(246, 242, 234, 0.5); color: #1A1F3D; } }
+:root[data-theme="dark"] .with-clear .clear { background: rgba(246, 242, 234, 0.5); color: #1A1F3D; }
+.feedback-form .hint { margin: 0; font-weight: 400; font-size: 14px; color: var(--muted); }
 .form-note { font-size: 15px; margin: 0; }
 .form-status { margin: 0; font-weight: 600; }
 .form-status:empty { display: none; }

@@ -65,6 +65,20 @@
       </select>
     </label>
 
+    <div class="field" id="prayer-times-field" hidden>
+      <span>Your prayer times <span class="muted">(from the app)</span></span>
+      <p class="readonly" id="prayer-times-shown"></p>
+    </div>
+
+    <div class="field">
+      <label for="country">Your country <span class="muted">(optional)</span></label>
+      <div class="with-clear">
+        <input id="country" name="country" type="text" maxlength="60" autocomplete="country-name" dir="auto">
+        <button type="button" class="clear" id="country-clear" aria-label="Clear your country" hidden><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 3l6 6M9 3l-6 6"/></svg></button>
+      </div>
+      <p class="hint" id="country-hint" hidden>Filled in by Tahir from where your prayer times are for. Change it or clear it if you'd rather not say.</p>
+    </div>
+
     <label class="field" for="email"><span>Your email <span class="muted">(optional, if you'd like a reply)</span></span>
       <input id="email" name="email" type="email" autocomplete="email" placeholder="name@example.com">
     </label>
@@ -72,6 +86,7 @@
 
     <input type="hidden" name="app_version" id="app_version">
     <input type="hidden" name="system" id="system">
+    <input type="hidden" name="prayer_times" id="prayer_times">
     <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
 
     <button type="submit" class="store send" id="send">Send feedback</button>
@@ -117,6 +132,44 @@
   document.getElementById("app_version").value = (q.get("v") || "").slice(0, 40);
   document.getElementById("system").value = [q.get("os"), q.get("model")].filter(Boolean).join(" · ").slice(0, 80);
 
+  // Tahir 1.1.2 adds its prayer-time method and Asr setting, shown as they came,
+  // and the country its prayer times are for, which people can change or clear.
+  var method = (q.get("method") || "").trim().slice(0, 60);
+  var asr = (q.get("asr") || "").trim().slice(0, 20);
+  if (method) {
+    var shown = document.getElementById("prayer-times-shown");
+    shown.appendChild(isolated(method));
+    if (asr) {
+      shown.appendChild(document.createTextNode(" · Asr: "));
+      shown.appendChild(isolated(asr));
+    }
+    document.getElementById("prayer_times").value = method + (asr ? " · Asr: " + asr : "");
+    show("prayer-times-field", true);
+  }
+  var country = document.getElementById("country");
+  var clear = document.getElementById("country-clear");
+  var fromApp = (q.get("country") || "").trim().slice(0, 60);
+  if (fromApp) {
+    country.value = fromApp;
+    country.setAttribute("aria-describedby", "country-hint");
+    show("country-hint", true);
+  }
+  function showClear() { clear.hidden = !country.value; }
+  showClear();
+  country.addEventListener("input", showClear);
+  clear.addEventListener("click", function () {
+    country.value = "";
+    showClear();
+    country.focus();
+  });
+
+  // Text from the link, kept as text (never markup) and set apart, so a
+  // right-to-left name doesn't reorder the words around it.
+  function isolated(text) {
+    var bdi = document.createElement("bdi");
+    bdi.textContent = text;
+    return bdi;
+  }
   function show(id, on) { document.getElementById(id).hidden = !on; }
   form.addEventListener("input", function (e) {
     if (e.target.name === "category") show("category-error", false);
@@ -145,6 +198,8 @@
       device: form.device.value || "Not given",
       app_version: form.app_version.value || "Not given",
       system: form.system.value || "Not given",
+      prayer_times: document.getElementById("prayer_times").value || "Not given",
+      country: country.value.trim().slice(0, 60) || "Not given",
       email: email || "Not given"
     };
     if (email) data._replyto = email;
