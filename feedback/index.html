@@ -128,6 +128,14 @@
   var fromHash = new URLSearchParams(location.hash.replace(/^#/, ""));
   var fromQuery = new URLSearchParams(location.search);
   var q = { get: function (name) { return fromHash.has(name) ? fromHash.get(name) : fromQuery.get(name); } };
+  // Opened from the app again with other details: Safari goes back to this
+  // tab and changes only what's after #, which doesn't load the page again,
+  // so the form kept the old ones (or stayed hidden after a send). Start
+  // afresh with the new ones, as a link with ? does.
+  window.addEventListener("hashchange", function () {
+    var next = new URLSearchParams(location.hash.replace(/^#/, ""));
+    if (next.has("device") || next.has("v")) location.reload();
+  });
   var device = q.get("device");
   if (device) {
     var select = document.getElementById("device");
