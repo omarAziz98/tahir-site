@@ -195,6 +195,7 @@ footer a { color: var(--muted); }
 
 /* ---- Feedback form ---- */
 .feedback-form { display: grid; gap: 22px; }
+.feedback-form[hidden] { display: none; }
 .feedback-form fieldset { border: 0; padding: 0; margin: 0; }
 .feedback-form legend, .field { font-weight: 600; font-size: 18px; }
 .feedback-form legend { margin-bottom: 12px; }

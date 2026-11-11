@@ -120,8 +120,14 @@
   var send = document.getElementById("send");
   var endpoint = "https://formsubmit.co/ajax/support@tahir5dailyprayers.com";
 
-  // The apps open this page with ?device=&v=&os= so a report says which build it's about.
-  var q = new URLSearchParams(location.search);
+  // The apps open this page with device, v and os (and from Tahir 1.1.2
+  // method, asr and country) so a report says which build it's about. Tahir
+  // 1.1.2 puts them after # (#device=&v=&os=…), which the browser keeps to
+  // itself, so they never reach this site's host; older builds and the
+  // Android app put them after ?. Each is read from after # first.
+  var fromHash = new URLSearchParams(location.hash.replace(/^#/, ""));
+  var fromQuery = new URLSearchParams(location.search);
+  var q = { get: function (name) { return fromHash.has(name) ? fromHash.get(name) : fromQuery.get(name); } };
   var device = q.get("device");
   if (device) {
     var select = document.getElementById("device");
